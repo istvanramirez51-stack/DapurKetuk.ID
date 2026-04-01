@@ -1,0 +1,782 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="description" content="FoodOrder - Pesan makanan favorit kamu secara online dengan cepat, mudah, dan aman. Tersedia berbagai pilihan restoran dan promo menarik.">
+  <title>DapurKetuk.ID - Pesan Makanan Online Terbaik</title>
+
+  <!-- Google Fonts -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+
+  <!-- Font Awesome CDN -->
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+
+  <!-- Stylesheet -->
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+  <!-- ========== NAVBAR ========== -->
+  <nav class="navbar" id="navbar">
+    <div class="container">
+      <a href="#" class="navbar-brand" onclick="navigateTo('home')">
+        <div class="brand-icon">
+          <!-- Ganti img src di bawah ini dengan logo Anda -->
+          <img src="/src/logodk.png" alt="Logo" onerror="this.style.display='none'; this.parentElement.innerHTML='<i class=\'fas fa-utensils\'></i>'">
+        </div>
+        Dapur<span>Ketuk</span>
+      </a>
+
+      <ul class="nav-links" id="navLinks">
+        <li><a href="#" class="active" data-page="home" onclick="navigateTo('home')"><i class="fas fa-home"></i> Home</a></li>
+        <li><a href="#" data-page="menu" onclick="navigateTo('menu')"><i class="fas fa-th-large"></i> Menu</a></li>
+        <li><a href="#" data-page="restaurant" onclick="navigateTo('restaurant')"><i class="fas fa-store"></i> Restoran</a></li>
+        <li><a href="#" data-page="promo" onclick="navigateTo('promo')"><i class="fas fa-tag"></i> Promo</a></li>
+        <li><a href="#" data-page="contact" onclick="navigateTo('contact')"><i class="fas fa-envelope"></i> Kontak</a></li>
+      </ul>
+
+      <div class="nav-actions">
+        <div class="nav-search">
+          <i class="fas fa-search"></i>
+          <input type="text" id="searchInput" placeholder="Cari makanan..." onkeyup="handleSearch(event)">
+        </div>
+
+        <div class="nav-cart" id="navCartBtn" onclick="navigateTo('cart')" title="Keranjang">
+          <i class="fas fa-shopping-cart"></i>
+          <span class="cart-badge" id="cartBadge">0</span>
+        </div>
+
+        <div class="nav-auth">
+          <button class="btn btn-primary btn-sm" onclick="navigateTo('auth')">
+            <i class="fas fa-user"></i> Login
+          </button>
+        </div>
+
+        <div class="hamburger" id="hamburger" onclick="toggleMobileMenu()">
+          <span></span>
+          <span></span>
+          <span></span>
+        </div>
+      </div>
+    </div>
+  </nav>
+
+  <!-- ========== HOME PAGE ========== -->
+  <div class="page active" id="page-home">
+
+    <!-- Hero Section -->
+    <section class="hero">
+      <div class="container">
+        <div class="hero-content">
+          <div class="hero-badge">
+            <i class="fas fa-bolt"></i>
+            Gratis Ongkir Pesanan Pertama!
+          </div>
+          <h1>Pesan Makanan <br><span class="highlight">Favoritmu</span> <br>Dengan Mudah</h1>
+          <p>Nikmati ribuan pilihan menu dari restoran terbaik di kotamu. Pesan sekarang, makanan diantar langsung ke rumah!</p>
+          <div class="hero-buttons">
+            <button class="btn btn-primary btn-lg" onclick="navigateTo('menu')">
+              <i class="fas fa-utensils"></i> Pesan Sekarang
+            </button>
+            <button class="btn btn-outline btn-lg" onclick="navigateTo('restaurant')">
+              <i class="fas fa-store"></i> Lihat Restoran
+            </button>
+          </div>
+          <div class="hero-stats">
+            <div class="hero-stat">
+              <div class="stat-number">500<span>+</span></div>
+              <div class="stat-label">Restoran</div>
+            </div>
+            <div class="hero-stat">
+              <div class="stat-number">10K<span>+</span></div>
+              <div class="stat-label">Menu</div>
+            </div>
+            <div class="hero-stat">
+              <div class="stat-number">50K<span>+</span></div>
+              <div class="stat-label">Pelanggan</div>
+            </div>
+          </div>
+        </div>
+        <div class="hero-visual">
+          <div class="hero-image-wrapper">
+            <img src="/src/logodk.png" alt="">
+          </div>
+          <div class="hero-float-card">
+            <div class="float-icon"><i class="fas fa-clock"></i></div>
+            <div class="float-text">
+              <strong>30 menit</strong>
+              <small>Estimasi pengiriman</small>
+            </div>
+          </div>
+          <div class="hero-float-card">
+            <div class="float-icon"><i class="fas fa-star"></i></div>
+            <div class="float-text">
+              <strong>4.8 Rating</strong>
+              <small>Dari 10K+ ulasan</small>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- Categories -->
+    <section class="categories">
+      <div class="container">
+        <div class="section-header">
+          <h2>Kategori Populer</h2>
+          <p>Temukan makanan berdasarkan kategori favoritmu</p>
+        </div>
+        <div class="category-grid" id="categoryGrid">
+          <div class="category-card active" data-category="all" onclick="filterMenu('all')">
+            <div class="cat-icon">🍽️</div>
+            <div class="cat-name">Semua</div>
+          </div>
+          <div class="category-card" data-category="makanan" onclick="filterMenu('makanan')">
+            <div class="cat-icon">🍔</div>
+            <div class="cat-name">Makanan</div>
+          </div>
+          <div class="category-card" data-category="minuman" onclick="filterMenu('minuman')">
+            <div class="cat-icon">🥤</div>
+            <div class="cat-name">Minuman</div>
+          </div>
+          <div class="category-card" data-category="snack" onclick="filterMenu('snack')">
+            <div class="cat-icon">🍟</div>
+            <div class="cat-name">Snack</div>
+          </div>
+          <div class="category-card" data-category="dessert" onclick="filterMenu('dessert')">
+            <div class="cat-icon">🍰</div>
+            <div class="cat-name">Dessert</div>
+          </div>
+          <div class="category-card" data-category="pizza" onclick="filterMenu('pizza')">
+            <div class="cat-icon">🍕</div>
+            <div class="cat-name">Pizza</div>
+          </div>
+          <div class="category-card" data-category="nasi" onclick="filterMenu('nasi')">
+            <div class="cat-icon">🍚</div>
+            <div class="cat-name">Nasi</div>
+          </div>
+          <div class="category-card" data-category="mie" onclick="filterMenu('mie')">
+            <div class="cat-icon">🍜</div>
+            <div class="cat-name">Mie</div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- Recommended Foods -->
+    <section class="section">
+      <div class="container">
+        <div class="section-header">
+          <h2>Rekomendasi Untukmu</h2>
+          <p>Menu paling populer yang disukai pelanggan kami</p>
+        </div>
+        <div class="food-grid" id="recommendedGrid">
+          <!-- Rendered by JS -->
+        </div>
+      </div>
+    </section>
+
+    <!-- Popular Restaurants -->
+    <section class="section">
+      <div class="container">
+        <div class="section-header">
+          <h2>Restoran Populer</h2>
+          <p>Restoran dengan rating terbaik di kotamu</p>
+        </div>
+        <div class="restaurant-grid" id="restaurantHomeGrid">
+          <!-- Rendered by JS -->
+        </div>
+      </div>
+    </section>
+
+    <!-- Promo Section -->
+    <section class="section">
+      <div class="container">
+        <div class="section-header">
+          <h2>Promo Spesial</h2>
+          <p>Dapatkan diskon menarik untuk pesanan kamu</p>
+        </div>
+        <div class="promo-grid" id="promoHomeGrid">
+          <!-- Rendered by JS -->
+        </div>
+      </div>
+    </section>
+
+    <!-- CTA -->
+    <section class="section">
+      <div class="container">
+        <div class="cta-section">
+          <h2>Siap Memesan Makanan?</h2>
+          <p>Download aplikasi kami atau pesan langsung melalui website. Gratis ongkir untuk pesanan pertamamu!</p>
+          <button class="btn btn-lg" onclick="navigateTo('menu')">
+            <i class="fas fa-shopping-bag"></i> Mulai Pesan
+          </button>
+        </div>
+      </div>
+    </section>
+
+    <!-- Footer -->
+    <footer class="footer">
+      <div class="container">
+        <div class="footer-grid">
+          <div class="footer-about">
+            <div class="footer-brand">
+              <i class="fas fa-utensils"></i>
+              Dapur<span>Ketuk</span>
+            </div>
+            <p>Platform pemesanan makanan online terbaik di Indonesia. Pesan makanan dari restoran favoritmu dan nikmati kemudahan pengiriman langsung ke pintu rumah.</p>
+            <div class="footer-social">
+              <a href="#" title="Facebook"><i class="fab fa-facebook-f"></i></a>
+              <a href="#" title="Instagram"><i class="fab fa-instagram"></i></a>
+              <a href="#" title="Twitter"><i class="fab fa-twitter"></i></a>
+              <a href="#" title="TikTok"><i class="fab fa-tiktok"></i></a>
+              <a href="#" title="YouTube"><i class="fab fa-youtube"></i></a>
+            </div>
+          </div>
+          <div class="footer-col">
+            <h4>Navigasi</h4>
+            <a href="#" onclick="navigateTo('home')">Home</a>
+            <a href="#" onclick="navigateTo('menu')">Menu</a>
+            <a href="#" onclick="navigateTo('restaurant')">Restoran</a>
+            <a href="#" onclick="navigateTo('promo')">Promo</a>
+            <a href="#" onclick="navigateTo('contact')">Kontak</a>
+          </div>
+          <div class="footer-col">
+            <h4>Bantuan</h4>
+            <a href="#">FAQ</a>
+            <a href="#">Cara Pesan</a>
+            <a href="#">Pembayaran</a>
+            <a href="#">Pengiriman</a>
+            <a href="#">Kebijakan Privasi</a>
+          </div>
+          <div class="footer-col">
+            <h4>Hubungi Kami</h4>
+            <a href="#"><i class="fas fa-phone"></i> +62 812 9889 7890</a>
+            <a href="#"><i class="fas fa-envelope"></i> dapurketuk77@gmail.com</a>
+            <a href="#"><i class="fas fa-map-marker-alt"></i> Pematang Siantar, Indonesia</a>
+          </div>
+        </div>
+        <div class="footer-bottom">
+          <p>&copy; 2026 DapurKetuk. All rights reserved. Made </i> By @Immanuel_2k</p>
+        </div>
+      </div>
+    </footer>
+  </div>
+
+  <!-- ========== MENU PAGE ========== -->
+  <div class="page" id="page-menu">
+    <section class="section">
+      <div class="container">
+        <div class="section-header">
+          <h2>Menu Lengkap</h2>
+          <p>Pilih makanan dan minuman favoritmu dari daftar menu kami</p>
+        </div>
+        <div class="category-grid" id="menuCategoryGrid">
+          <div class="category-card active" data-category="all" onclick="filterMenu('all')">
+            <div class="cat-icon">🍽️</div>
+            <div class="cat-name">Semua</div>
+          </div>
+          <div class="category-card" data-category="makanan" onclick="filterMenu('makanan')">
+            <div class="cat-icon">🍔</div>
+            <div class="cat-name">Makanan</div>
+          </div>
+          <div class="category-card" data-category="minuman" onclick="filterMenu('minuman')">
+            <div class="cat-icon">🥤</div>
+            <div class="cat-name">Minuman</div>
+          </div>
+          <div class="category-card" data-category="snack" onclick="filterMenu('snack')">
+            <div class="cat-icon">🍟</div>
+            <div class="cat-name">Snack</div>
+          </div>
+          <div class="category-card" data-category="dessert" onclick="filterMenu('dessert')">
+            <div class="cat-icon">🍰</div>
+            <div class="cat-name">Dessert</div>
+          </div>
+          <div class="category-card" data-category="pizza" onclick="filterMenu('pizza')">
+            <div class="cat-icon">🍕</div>
+            <div class="cat-name">Pizza</div>
+          </div>
+          <div class="category-card" data-category="nasi" onclick="filterMenu('nasi')">
+            <div class="cat-icon">🍚</div>
+            <div class="cat-name">Nasi</div>
+          </div>
+          <div class="category-card" data-category="mie" onclick="filterMenu('mie')">
+            <div class="cat-icon">🍜</div>
+            <div class="cat-name">Mie</div>
+          </div>
+        </div>
+        <div class="food-grid" id="menuGrid" style="margin-top: 40px;">
+          <!-- Rendered by JS -->
+        </div>
+      </div>
+    </section>
+  </div>
+
+  <!-- ========== RESTAURANT PAGE ========== -->
+  <div class="page" id="page-restaurant">
+    <section class="section">
+      <div class="container">
+        <div class="section-header">
+          <h2>Semua Restoran</h2>
+          <p>Temukan restoran terbaik dengan berbagai pilihan kuliner</p>
+        </div>
+        <div class="restaurant-grid" id="restaurantGrid">
+          <!-- Rendered by JS -->
+        </div>
+      </div>
+    </section>
+  </div>
+
+  <!-- ========== PROMO PAGE ========== -->
+  <div class="page" id="page-promo">
+    <section class="section">
+      <div class="container">
+        <div class="section-header">
+          <h2>Promo & Diskon</h2>
+          <p>Nikmati penawaran terbaik dari kami untuk kamu</p>
+        </div>
+        <div class="promo-grid" id="promoGrid">
+          <!-- Rendered by JS -->
+        </div>
+      </div>
+    </section>
+  </div>
+
+  <!-- ========== CONTACT PAGE ========== -->
+  <div class="page" id="page-contact">
+    <section class="contact-section">
+      <div class="container">
+        <div class="section-header">
+          <h2>Hubungi Kami</h2>
+          <p>Ada pertanyaan atau masukan? Jangan ragu untuk menghubungi kami</p>
+        </div>
+        <div class="contact-grid">
+          <div class="contact-info-cards">
+            <div class="contact-info-card">
+              <div class="info-icon"><i class="fas fa-map-marker-alt"></i></div>
+              <div class="info-text">
+                <h4>Alamat Kantor</h4>
+                <p>Jl. Sudirman No. 67, Pematang Siantar 10110</p>
+              </div>
+            </div>
+            <div class="contact-info-card">
+              <div class="info-icon"><i class="fas fa-phone"></i></div>
+              <div class="info-text">
+                <h4>Telepon</h4>
+                <p>+62 812 9889 7890</p>
+              </div>
+            </div>
+            <div class="contact-info-card">
+              <div class="info-icon"><i class="fas fa-envelope"></i></div>
+              <div class="info-text">
+                <h4>Email</h4>
+                <p>dapurketuk77@gmail.com</p>
+              </div>
+            </div>
+            <div class="contact-info-card">
+              <div class="info-icon"><i class="fas fa-clock"></i></div>
+              <div class="info-text">
+                <h4>Jam Operasional</h4>
+                <p>Setiap hari, 08:00 - 23:00 WIB</p>
+              </div>
+            </div>
+          </div>
+          <div class="contact-form-card">
+            <h3>Kirim Pesan</h3>
+            <form onsubmit="handleContactForm(event)">
+              <div class="form-group">
+                <label>Nama Lengkap</label>
+                <input type="text" placeholder="Masukkan nama kamu" required>
+              </div>
+              <div class="form-group">
+                <label>Email</label>
+                <input type="email" placeholder="email@contoh.com" required>
+              </div>
+              <div class="form-group">
+                <label>Pesan</label>
+                <textarea placeholder="Tulis pesan kamu di sini..." required></textarea>
+              </div>
+              <button type="submit" class="btn btn-primary" style="width:100%;">
+                <i class="fas fa-paper-plane"></i> Kirim Pesan
+              </button>
+            </form>
+          </div>
+        </div>
+      </div>
+    </section>
+  </div>
+
+  <!-- ========== AUTH PAGE ========== -->
+  <div class="page" id="page-auth">
+    <div class="auth-page">
+      <div class="auth-container">
+        <div class="auth-card">
+          <div class="auth-header">
+            <h2>Selamat Datang</h2>
+            <p>Login atau daftar untuk mulai memesan</p>
+          </div>
+
+          <div class="auth-tabs">
+            <button class="auth-tab active" onclick="switchAuthTab('login')">Login</button>
+            <button class="auth-tab" onclick="switchAuthTab('register')">Daftar</button>
+          </div>
+
+          <!-- Login Form -->
+          <form class="auth-form active" id="loginForm" onsubmit="handleLogin(event)">
+            <div class="form-group">
+              <label>Email</label>
+              <div class="input-wrapper">
+                <i class="fas fa-envelope"></i>
+                <input type="email" id="loginEmail" placeholder="email@contoh.com" required>
+              </div>
+              <span class="error-msg" id="loginEmailError">Email tidak valid</span>
+            </div>
+            <div class="form-group">
+              <label>Password</label>
+              <div class="input-wrapper">
+                <i class="fas fa-lock"></i>
+                <input type="password" id="loginPassword" placeholder="Masukkan password" required>
+              </div>
+              <span class="error-msg" id="loginPasswordError">Password harus minimal 6 karakter</span>
+            </div>
+            <div class="form-options">
+              <label><input type="checkbox"> Ingat saya</label>
+              <a href="#">Lupa password?</a>
+            </div>
+            <button type="submit" class="btn btn-primary auth-submit">
+              <i class="fas fa-sign-in-alt"></i> Login
+            </button>
+          </form>
+
+          <!-- Register Form -->
+          <form class="auth-form" id="registerForm" onsubmit="handleRegister(event)">
+            <div class="form-group">
+              <label>Nama Lengkap</label>
+              <div class="input-wrapper">
+                <i class="fas fa-user"></i>
+                <input type="text" id="registerName" placeholder="Nama lengkap kamu" required>
+              </div>
+              <span class="error-msg" id="registerNameError">Nama harus diisi</span>
+            </div>
+            <div class="form-group">
+              <label>Email</label>
+              <div class="input-wrapper">
+                <i class="fas fa-envelope"></i>
+                <input type="email" id="registerEmail" placeholder="email@contoh.com" required>
+              </div>
+              <span class="error-msg" id="registerEmailError">Email tidak valid</span>
+            </div>
+            <div class="form-group">
+              <label>No. HP</label>
+              <div class="input-wrapper">
+                <i class="fas fa-phone"></i>
+                <input type="tel" id="registerPhone" placeholder="08xxxxxxxxxx" required>
+              </div>
+              <span class="error-msg" id="registerPhoneError">Nomor HP tidak valid</span>
+            </div>
+            <div class="form-group">
+              <label>Password</label>
+              <div class="input-wrapper">
+                <i class="fas fa-lock"></i>
+                <input type="password" id="registerPassword" placeholder="Minimal 6 karakter" required>
+              </div>
+              <span class="error-msg" id="registerPasswordError">Password harus minimal 6 karakter</span>
+            </div>
+            <button type="submit" class="btn btn-primary auth-submit">
+              <i class="fas fa-user-plus"></i> Daftar
+            </button>
+          </form>
+
+          <div class="auth-divider">atau lanjutkan dengan</div>
+          <button class="btn btn-outline" style="width:100%" onclick="showToast('Fitur login sosial akan segera hadir!')">
+            <i class="fab fa-google"></i> Google
+          </button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ========== CART PAGE ========== -->
+  <div class="page" id="page-cart">
+    <section class="cart-page">
+      <div class="container">
+        <div class="cart-items-header">
+          <h2><i class="fas fa-shopping-cart" style="color: var(--primary)"></i> Keranjang Belanja</h2>
+          <button class="btn btn-outline btn-sm" onclick="clearCart()" id="clearCartBtn">
+            <i class="fas fa-trash"></i> Hapus Semua
+          </button>
+        </div>
+        <div class="cart-layout" id="cartLayout">
+          <div id="cartItemsList">
+            <!-- Rendered by JS -->
+          </div>
+          <div class="cart-summary" id="cartSummary">
+            <h3>Ringkasan Pesanan</h3>
+            <div class="cart-summary-row">
+              <span class="label">Subtotal</span>
+              <span class="value" id="cartSubtotal">Rp 0</span>
+            </div>
+            <div class="cart-summary-row">
+              <span class="label">Ongkos Kirim</span>
+              <span class="value" id="cartShipping">Rp 0</span>
+            </div>
+            <div class="cart-summary-row">
+              <span class="label">Biaya Layanan</span>
+              <span class="value" id="cartService">Rp 0</span>
+            </div>
+            <div class="cart-summary-row total">
+              <span class="label">Total</span>
+              <span class="value" id="cartTotal">Rp 0</span>
+            </div>
+            <button class="btn btn-primary btn-lg" onclick="navigateTo('address')" id="checkoutBtn">
+              <i class="fas fa-arrow-right"></i> Lanjut ke Alamat
+            </button>
+          </div>
+        </div>
+        <div class="cart-empty" id="cartEmpty" style="display:none;">
+          <i class="fas fa-shopping-basket"></i>
+          <h3>Keranjang Kosong</h3>
+          <p>Belum ada item di keranjang. Yuk, mulai pesan makanan favoritmu!</p>
+          <button class="btn btn-primary" onclick="navigateTo('menu')">
+            <i class="fas fa-utensils"></i> Lihat Menu
+          </button>
+        </div>
+      </div>
+    </section>
+  </div>
+
+  <!-- ========== ADDRESS PAGE ========== -->
+  <div class="page" id="page-address">
+    <section class="address-page">
+      <div class="container">
+        <div class="address-form-container">
+          <div class="address-form-card">
+            <h2><i class="fas fa-map-marker-alt" style="color: var(--primary)"></i> Alamat Pengiriman</h2>
+            <p>Masukkan alamat pengiriman untuk pesanan kamu</p>
+
+            <form id="addressForm" onsubmit="handleAddressForm(event)">
+              <div class="form-row">
+                <div class="form-group">
+                  <label>Nama Penerima</label>
+                  <input type="text" id="recipientName" placeholder="Nama lengkap" required>
+                </div>
+                <div class="form-group">
+                  <label>No. HP</label>
+                  <input type="tel" id="recipientPhone" placeholder="08xxxxxxxxxx" required>
+                </div>
+              </div>
+              <div class="form-group">
+                <label>Label Alamat</label>
+                <input type="text" id="addressLabel" placeholder="Contoh: Rumah, Kantor">
+              </div>
+              <div class="form-group">
+                <label>Alamat Lengkap</label>
+                <textarea id="fullAddress" placeholder="Jalan, RT/RW, Kelurahan, Kecamatan..." required></textarea>
+              </div>
+              <div class="form-row">
+                <div class="form-group">
+                  <label>Kota</label>
+                  <input type="text" id="city" placeholder="Kota / Kabupaten" required>
+                </div>
+                <div class="form-group">
+                  <label>Kode Pos</label>
+                  <input type="text" id="postalCode" placeholder="Kode pos">
+                </div>
+              </div>
+              <div class="form-group">
+                <label>Catatan (opsional)</label>
+                <textarea id="addressNote" placeholder="Patokan, warna rumah, dll."></textarea>
+              </div>
+              <button type="submit" class="btn btn-primary" style="width: 100%;">
+                <i class="fas fa-save"></i> Simpan & Lanjutkan
+              </button>
+            </form>
+          </div>
+
+          <div class="saved-addresses" id="savedAddresses" style="display:none;">
+            <h3>Alamat Tersimpan</h3>
+            <div id="addressesList">
+              <!-- Rendered by JS -->
+            </div>
+            <button class="btn btn-primary" style="width:100%; margin-top: 16px;" onclick="navigateTo('checkout')">
+              <i class="fas fa-arrow-right"></i> Lanjut ke Checkout
+            </button>
+          </div>
+        </div>
+      </div>
+    </section>
+  </div>
+
+  <!-- ========== CHECKOUT PAGE ========== -->
+  <div class="page" id="page-checkout">
+    <section class="checkout-page">
+      <div class="container">
+        <div class="section-header" style="margin-bottom:32px;">
+          <h2>Checkout</h2>
+          <p>Periksa pesanan dan pilih metode pembayaran</p>
+        </div>
+        <div class="checkout-layout">
+          <div class="checkout-main">
+            <!-- Order Summary -->
+            <div class="checkout-section">
+              <h3><i class="fas fa-receipt"></i> Ringkasan Pesanan</h3>
+              <div id="checkoutOrderItems">
+                <!-- Rendered by JS -->
+              </div>
+            </div>
+
+            <!-- Delivery Address -->
+            <div class="checkout-section">
+              <h3><i class="fas fa-map-marker-alt"></i> Alamat Pengiriman</h3>
+              <div id="checkoutAddress">
+                <p style="color: var(--text-muted); font-size: 0.9rem;">Belum ada alamat dipilih</p>
+              </div>
+            </div>
+
+            <!-- Delivery Method -->
+            <div class="checkout-section">
+              <h3><i class="fas fa-truck"></i> Metode Pengiriman</h3>
+              <div class="delivery-options">
+                <label class="delivery-option selected" onclick="selectDelivery(this, 15000)">
+                  <input type="radio" name="delivery" value="regular" checked>
+                  <span class="radio-custom"></span>
+                  <span class="delivery-info">
+                    <strong>Regular</strong>
+                    <span>Estimasi 30-45 menit</span>
+                  </span>
+                  <span class="delivery-price">Rp 15.000</span>
+                </label>
+                <label class="delivery-option" onclick="selectDelivery(this, 25000)">
+                  <input type="radio" name="delivery" value="express">
+                  <span class="radio-custom"></span>
+                  <span class="delivery-info">
+                    <strong>Express</strong>
+                    <span>Estimasi 15-20 menit</span>
+                  </span>
+                  <span class="delivery-price">Rp 25.000</span>
+                </label>
+                <label class="delivery-option" onclick="selectDelivery(this, 0)">
+                  <input type="radio" name="delivery" value="pickup">
+                  <span class="radio-custom"></span>
+                  <span class="delivery-info">
+                    <strong>Ambil Sendiri</strong>
+                    <span>Ambil di restoran</span>
+                  </span>
+                  <span class="delivery-price">Gratis</span>
+                </label>
+              </div>
+            </div>
+
+            <!-- Payment Method -->
+            <div class="checkout-section">
+              <h3><i class="fas fa-credit-card"></i> Metode Pembayaran</h3>
+              <div class="payment-methods">
+                <label class="payment-method selected" onclick="selectPayment(this)">
+                  <input type="radio" name="payment" value="mbanking" checked>
+                  <span class="radio-custom"></span>
+                  <span class="payment-icon"><i class="fas fa-university"></i></span>
+                  <span class="payment-info">
+                    <strong>M-Banking</strong>
+                    <span>Transfer via mobile banking</span>
+                  </span>
+                </label>
+                <label class="payment-method" onclick="selectPayment(this)">
+                  <input type="radio" name="payment" value="ovo">
+                  <span class="radio-custom"></span>
+                  <span class="payment-icon"><i class="fas fa-wallet"></i></span>
+                  <span class="payment-info">
+                    <strong>OVO</strong>
+                    <span>Bayar dengan saldo OVO</span>
+                  </span>
+                </label>
+                <label class="payment-method" onclick="selectPayment(this)">
+                  <input type="radio" name="payment" value="dana">
+                  <span class="radio-custom"></span>
+                  <span class="payment-icon"><i class="fas fa-wallet"></i></span>
+                  <span class="payment-info">
+                    <strong>Dana</strong>
+                    <span>Bayar dengan saldo Dana</span>
+                  </span>
+                </label>
+                <label class="payment-method" onclick="selectPayment(this)">
+                  <input type="radio" name="payment" value="gopay">
+                  <span class="radio-custom"></span>
+                  <span class="payment-icon"><i class="fas fa-wallet"></i></span>
+                  <span class="payment-info">
+                    <strong>GoPay</strong>
+                    <span>Bayar dengan saldo GoPay</span>
+                  </span>
+                </label>
+                <label class="payment-method" onclick="selectPayment(this)">
+                  <input type="radio" name="payment" value="cod">
+                  <span class="radio-custom"></span>
+                  <span class="payment-icon"><i class="fas fa-money-bill-wave"></i></span>
+                  <span class="payment-info">
+                    <strong>COD (Bayar di Tempat)</strong>
+                    <span>Bayar saat pesanan diterima</span>
+                  </span>
+                </label>
+              </div>
+            </div>
+          </div>
+
+          <!-- Payment Summary Sidebar -->
+          <div class="cart-summary">
+            <h3>Rincian Pembayaran</h3>
+            <div class="cart-summary-row">
+              <span class="label">Subtotal</span>
+              <span class="value" id="checkoutSubtotal">Rp 0</span>
+            </div>
+            <div class="cart-summary-row">
+              <span class="label">Ongkos Kirim</span>
+              <span class="value" id="checkoutShipping">Rp 15.000</span>
+            </div>
+            <div class="cart-summary-row">
+              <span class="label">Biaya Layanan</span>
+              <span class="value" id="checkoutService">Rp 2.000</span>
+            </div>
+            <div class="cart-summary-row total">
+              <span class="label">Total Bayar</span>
+              <span class="value" id="checkoutTotal">Rp 0</span>
+            </div>
+            <button class="btn btn-primary btn-lg" onclick="placeOrder()">
+              <i class="fas fa-check-circle"></i> Bayar Sekarang
+            </button>
+          </div>
+        </div>
+      </div>
+    </section>
+  </div>
+
+  <!-- ========== ORDER SUCCESS MODAL ========== -->
+  <div class="modal-overlay" id="orderSuccessModal">
+    <div class="modal-content">
+      <div class="modal-icon">
+        <i class="fas fa-check"></i>
+      </div>
+      <h2>Pesanan Berhasil!</h2>
+      <p>Terima kasih! Pesananmu sedang diproses. Kamu akan menerima notifikasi saat pesanan dalam perjalanan.</p>
+      <button class="btn btn-primary btn-lg" onclick="closeModal()">
+        <i class="fas fa-home"></i> Kembali ke Home
+      </button>
+    </div>
+  </div>
+
+  <!-- ========== TOAST NOTIFICATION ========== -->
+  <div class="toast" id="toast">
+    <i class="fas fa-check-circle"></i>
+    <span id="toastMessage">Item ditambahkan ke keranjang!</span>
+  </div>
+
+  <!-- ========== BACK TO TOP ========== -->
+  <button class="back-to-top" id="backToTop" onclick="window.scrollTo({top: 0, behavior: 'smooth'})">
+    <i class="fas fa-chevron-up"></i>
+  </button>
+
+  <!-- JavaScript -->
+  <script src="script.js"></script>
+</body>
+</html>
